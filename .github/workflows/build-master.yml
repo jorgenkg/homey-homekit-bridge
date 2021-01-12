@@ -1,0 +1,94 @@
+name: Build and release master
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - 'CHANGELOG.md'
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 12
+    - name: Install packages
+      run: npm ci && npm run postinstall --if-present
+    - name: Transpile with Typescript
+      run: npx tsc --build tsconfig.json
+    - name: Run tests
+      run: npm run test
+    - name: Setup credentials
+      run: |
+        set -e
+
+        if [ ! -d "$HOME/.athom-cli" ]; then
+            mkdir -p $HOME/.athom-cli
+        fi
+
+        if [ ! -f "$HOME/.athom-cli/settings.json" ]; then
+          printenv HOMEY_SETTINGS > $HOME/.athom-cli/settings.json
+        fi
+    - name: Run Homey validation
+      run: npx homey app validate -p build -l publish
+  
+  release:
+    needs: build
+    name: Create release
+    runs-on: ubuntu-latest
+    environment:
+      name: publishing
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 12
+    - name: Install parse-changelog
+        run: cargo install parse-changelog
+    - name: Install packages
+      run: npm ci && npm run postinstall --if-present
+    - name: Setup credentials
+      run: |
+        set -e
+
+        if [ ! -d "$HOME/.athom-cli" ]; then
+            mkdir -p $HOME/.athom-cli
+        fi
+
+        if [ ! -f "$HOME/.athom-cli/settings.json" ]; then
+          printenv HOMEY_SETTINGS > $HOME/.athom-cli/settings.json
+        fi
+    - name: Tag release and push to Github
+      run: |
+        set -e
+
+        git config --local user.name "Github Actions"
+        git config --local user.email "github-actions@example.com"
+
+        git pull origin master
+
+        npx standard-version
+
+        UPDATED_VERSION=`jq '.version' --raw-output package.json`
+        CHANGE_NOTES=$(parse-changelog CHANGELOG.md "$UPDATED_VERSION")
+        
+        cat <<< $(jq --arg UPDATED_VERSION $UPDATED_VERSION '.version = $UPDATED_VERSION' build/app.json) > build/app.json
+        cat <<< $(jq --arg UPDATED_VERSION $UPDATED_VERSION --arg CHANGE_NOTES $CHANGE_NOTES '.[$UPDATED_VERSION] = $CHANGE_NOTES' build/.homeychangelog.json) > build/.homeychangelog.json
+
+        git add build/app.json build/.homeychangelog.json
+        git commit --amend
+
+        git push --tags origin master
+    - name: Publish Homey app
+      run: echo "n" | npm run dist

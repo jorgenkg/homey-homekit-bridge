@@ -1,0 +1,41 @@
+{
+  "name": "homey-homekit-bridge",
+  "version": "1.0.0",
+  "main": "build/app.js",
+  "scripts": {
+    "clean": "rm -rf build/@types build/drivers build/enums build/test build/app.js",
+    "homey-validate": "npx homey app validate -p build -l publish",
+    "homey-publish": "npx homey app publish -p build",
+    "build": "npx tsc --build tsconfig.prod.json",
+    "dist": "npm run clean && npm run build && npm run homey-validate && npm run homey-publish",
+    "test": "TEST=1 tape --unhandled-rejections=strict --enable-source-maps build/test/integration/*tests.js"
+  },
+  "engines": {
+    "node": ">=12.16.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@types/debug": "^4.1.6",
+    "@types/homey": "npm:homey-apps-sdk-v3-types@^0.2.2",
+    "@types/node": "^16.3.3",
+    "@types/sinon": "^10.0.2",
+    "@types/tape": "^4.13.1",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
+    "eslint": "^7.31.0",
+    "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
+    "homey": "^2.20.3",
+    "husky": "^7.0.1",
+    "standard-version": "^9.3.1",
+    "strict-event-emitter-types": "^2.0.0",
+    "tape": "^5.2.2",
+    "ts-mock-imports": "^1.3.7",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "athom-api": "^3.6.3",
+    "debug": "^4.3.2",
+    "hap-nodejs": "^0.9.4"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "id": "no.jorgenkg.homey-homekit-bridge",
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "name": {
+    "en": "Homey HomeKit Bridge"
+  },
+  "description": {
+    "en": "Make Homey appear as a HomeKit bridge to access devices in Apple Home",
+    "no": "Få Homey til å vises som en HomeKit Bridge i Apple Home."
+  },
+  "category": [
+    "tools"
+  ],
+  "brandColor": "#FA9D1A",
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "author": {
+    "name": "Jørgen Grimnes",
+    "email": "jorgenkg@yahoo.no"
+  },
+  "permissions": [
+    "homey:manager:api"
+  ],
+  "drivers": [
+    {
+      "id": "bridge",
+      "name": {
+        "en": "Bridge"
+      },
+      "class": "other",
+      "images": {
+        "large": "/assets/driverimages/large.png",
+        "small": "/assets/driverimages/small.png"
+      },
+      "capabilities": [],
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          },
+          "options": {
+            "singular": true
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": []
+    }
+  ]
+}
