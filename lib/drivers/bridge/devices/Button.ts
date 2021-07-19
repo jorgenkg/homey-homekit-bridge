@@ -2,7 +2,7 @@ import { BaseDevice } from "./BaseDevice";
 import { Categories } from "hap-nodejs";
 import { HomeyCapability } from "../../../enums/HomeyCapability";
 import { HomeyClass } from "../../../enums/HomeyClass";
-import { StatelessButtonCapability } from "../capabilities";
+import { StatelessButtonCapability } from "../capabilities/ButtonCapability";
 import { Switch } from "hap-nodejs/dist/lib/definitions";
 import type { Device } from "homey";
 import type { HomeyAPI } from "athom-api";
@@ -12,7 +12,7 @@ export class Button extends BaseDevice<HomeyClass.button> {
     super(device, HomeyClass.button, homey);
   }
 
-  public initialize(): void | Promise<void> {
+  public initialize(): void {
     this.accessory.category = Categories.SWITCH;
 
     for(const { capabilityType, capabilityId, subType } of this.getCapabilitiesWithSubtypes()) {

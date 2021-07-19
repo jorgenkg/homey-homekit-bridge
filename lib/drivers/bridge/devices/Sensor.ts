@@ -19,7 +19,7 @@ export class Sensor extends BaseDevice<HomeyClass.sensor> {
     super(device, HomeyClass.sensor, homey);
   }
 
-  initialize(): void | Promise<void> {
+  initialize(): void {
     this.accessory.category = Categories.SENSOR;
     const services: Array<Service> = [];
 

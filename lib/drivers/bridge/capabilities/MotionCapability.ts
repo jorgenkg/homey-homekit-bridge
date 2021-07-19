@@ -8,7 +8,7 @@ export class MotionCapability extends BaseCapability<HomeyCapability.alarm_motio
     const characteristic: MotionDetected = service
       .getCharacteristic(MotionDetected)
       .updateValue(this.getTransform(this.getCapabilityValue()))
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail());
 
     this.registerCapabilityListenerOrFail(characteristic);
 

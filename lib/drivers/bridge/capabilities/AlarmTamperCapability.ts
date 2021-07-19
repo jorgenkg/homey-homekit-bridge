@@ -18,7 +18,7 @@ export class AlarmTamperCapability extends BaseCapability<HomeyCapability.alarm_
     const characteristic: StatusTampered = service
       .getCharacteristic(StatusTampered)
       .updateValue(this.getTransform(this.getCapabilityValue()))
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail());
 
     this.registerCapabilityListenerOrFail(characteristic);
 

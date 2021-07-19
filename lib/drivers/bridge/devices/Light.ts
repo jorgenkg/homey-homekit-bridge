@@ -6,16 +6,14 @@ import {
 } from "hap-nodejs";
 import { BaseDevice } from "./BaseDevice";
 import { Brightness, ColorTemperature, Lightbulb } from "hap-nodejs/dist/lib/definitions";
-import {
-  DimLightCapability,
-  LightHueCapability,
-  LightSaturationCapability,
-  LightTemperatureCapability,
-  OnoffCapability
-} from "../capabilities";
+import { DimLightCapability } from "../capabilities/DimCapability";
 import { EventEmitter } from "events";
 import { HomeyCapability } from "../../../enums/HomeyCapability";
 import { HomeyClass } from "../../../enums/HomeyClass";
+import { LightHueCapability } from "../capabilities/LightHueCapability";
+import { LightSaturationCapability } from "../capabilities/LightSaturationCapability";
+import { LightTemperatureCapability } from "../capabilities/LightTemperatureCapability";
+import { OnoffCapability } from "../capabilities/OnoffCapability";
 import type { Device } from "homey";
 import type { HomeyAPI } from "athom-api";
 import type StrictEventEmitter from "strict-event-emitter-types";
@@ -35,7 +33,7 @@ export class Light extends BaseDevice<HomeyClass.light> {
     super(device, HomeyClass.light, homey);
   }
 
-  initialize(): void | Promise<void> {
+  initialize(): void {
     this.accessory.category = Categories.LIGHTBULB;
     const services: Record<string, Lightbulb> = {};
 
@@ -57,10 +55,9 @@ export class Light extends BaseDevice<HomeyClass.light> {
       else if(capabilityType === HomeyCapability.light_hue) {
         const capability = new LightHueCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
         capability.initialize(services[subType]);
-        capability.characteristic?.on(CharacteristicEventTypes.SET, (value: unknown, callback: CharacteristicSetCallback) => {
+        capability.characteristic?.onSet(() => {
           try {
             this.eventEmitter.emit("changeLightMode", "color");
-            callback();
           }
           catch(error) {
             this.homey.error(util.inspect(error, { breakLength: Infinity, depth: null }));
@@ -71,10 +68,9 @@ export class Light extends BaseDevice<HomeyClass.light> {
       else if(capabilityType === HomeyCapability.light_saturation) {
         const capability = new LightSaturationCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
         capability.initialize(services[subType]);
-        capability.characteristic?.on(CharacteristicEventTypes.SET, (value: unknown, callback: CharacteristicSetCallback) => {
+        capability.characteristic?.onSet(() => {
           try {
             this.eventEmitter.emit("changeLightMode", "color");
-            callback();
           }
           catch(error) {
             this.homey.error(util.inspect(error, { breakLength: Infinity, depth: null }));
@@ -85,10 +81,9 @@ export class Light extends BaseDevice<HomeyClass.light> {
       else if(capabilityType === HomeyCapability.light_temperature) {
         const capability = new LightTemperatureCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
         capability.initialize(services[subType]);
-        capability.characteristic?.on(CharacteristicEventTypes.SET, (value: unknown, callback: CharacteristicSetCallback) => {
+        capability.characteristic?.onSet(() => {
           try {
             this.eventEmitter.emit("changeLightMode", "temperature");
-            callback();
           }
           catch(error) {
             this.homey.error(util.inspect(error, { breakLength: Infinity, depth: null }));

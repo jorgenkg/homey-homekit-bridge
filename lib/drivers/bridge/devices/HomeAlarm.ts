@@ -1,10 +1,8 @@
-import {
-  AlarmTamperCapability,
-  HomeAlarmCapability
-} from "../capabilities";
+import { AlarmTamperCapability } from "../capabilities/AlarmTamperCapability";
 import { BaseDevice } from "./BaseDevice";
 import { Categories, Service } from "hap-nodejs";
 import { EventEmitter } from "events";
+import { HomeAlarmCapability } from "../capabilities/HomeAlarmCapability";
 import { HomeyCapability } from "../../../enums/HomeyCapability";
 import { HomeyClass } from "../../../enums/HomeyClass";
 import { SecuritySystem } from "hap-nodejs/dist/lib/definitions";
@@ -23,7 +21,7 @@ export class HomeAlarm extends BaseDevice<HomeyClass.homealarm> {
     super(device, HomeyClass.homealarm, homey);
   }
 
-  initialize(): void | Promise<void> {
+  initialize(): void {
     this.accessory.category = Categories.SECURITY_SYSTEM;
     const services: Record<string, Service> = {};
 

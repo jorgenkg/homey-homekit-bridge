@@ -6,7 +6,7 @@ import { HomeyCapability } from "../../../enums/HomeyCapability";
 import { HomeyCapabilityTypes } from "../../../@types/HomeyCapabilityTypes";
 import { HomeyClass } from "../../../enums/HomeyClass";
 import type {
-  Characteristic, CharacteristicGetCallback, CharacteristicSetCallback, Service
+  Characteristic, CharacteristicGetCallback, CharacteristicGetHandler, CharacteristicSetCallback, Nullable, Service
 } from "hap-nodejs";
 import type { Device } from "homey";
 import type { HomeyAPI } from "athom-api";
@@ -34,7 +34,7 @@ export abstract class BaseCapability<
   public constructor(
     deviceClass: HomeyClass,
     device: HomeyAPI.ManagerDevices.Device,
-        homey: Device.Homey,
+    homey: Device.Homey,
     capabilityType: Capability,
     capabilityId: string,
     deferUpdate: BaseDevice<HomeyClass>["deferUpdate"]
@@ -68,40 +68,36 @@ export abstract class BaseCapability<
     return this.compabilityInstance.value;
   }
 
-  setCapabilityValueOrFail(): (value: any, callback: CharacteristicSetCallback) => Promise<void> {
-    return async(value: CharacteristicValue, callback: CharacteristicSetCallback): Promise<void> => {
+  setCapabilityValueOrFail<T extends CharacteristicValue = CharacteristicValue>() {
+    return async(value: T) => {
       try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         await this.deferUpdate(this.capabilityId, value, () => this.compabilityInstance.setValue(this.setTransform(value)));
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         this.homey.log(`Updated Homey capability '${this.capabilityId}': ${value}`);
-        callback();
+        return void 0;
       }
       catch(error) {
         this.homey.error(util.inspect(error, { breakLength: Infinity, depth: null }));
-        callback();
+        return null;
       }
     };
   }
 
   getCapabilityValueOrFail() {
-    return (callback: CharacteristicGetCallback): void => {
+    return () => {
       try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const value = this.getCapabilityValue();
-        if(value === null) {
-          callback(new Error("getCapabilityValue returned null"));
-        }
-        else {
-          callback(undefined, this.getTransform(value) as any);
-        }
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         this.homey.log(`Fetched Homey capability value '${this.capabilityId}': ${value}`);
+
+        return (value === null) ? value : this.getTransform(value);
       }
       catch(error) {
         this.homey.error(util.inspect(error, { breakLength: Infinity, depth: null }));
-        callback();
       }
+      return null;
     };
   }
 

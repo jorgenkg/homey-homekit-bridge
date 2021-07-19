@@ -8,7 +8,7 @@ export class CarbonDioxideCapability extends BaseCapability<HomeyCapability.meas
     const characteristic: CarbonDioxideLevel = service
       .getCharacteristic(CarbonDioxideLevel)
       .updateValue(this.getTransform(this.getCapabilityValue()))
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail());
 
     this.registerCapabilityListenerOrFail(characteristic);
 

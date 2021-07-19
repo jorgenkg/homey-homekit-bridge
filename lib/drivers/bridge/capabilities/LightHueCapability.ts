@@ -18,8 +18,8 @@ export class LightHueCapability extends BaseCapability<HomeyCapability.light_hue
     const characteristic: Hue = this.characteristic = service
       .getCharacteristic(Hue)
       .updateValue(this.getTransform(this.getCapabilityValue()))
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail())
-      .on(CharacteristicEventTypes.SET, this.setCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail())
+      .onSet(this.setCapabilityValueOrFail<any>());
 
     this.registerCapabilityListenerOrFail(characteristic);
 

@@ -59,6 +59,8 @@ export abstract class BaseDevice<DeviceClass extends HomeyClass> {
       .setCharacteristic(Characteristic.SerialNumber, this.device.id);
 
     this.accessory.on(AccessoryEventTypes.IDENTIFY, (_paired, callback) => callback());
+
+    this.initialize();
   }
 
   protected getCapabilitiesWithSubtypes(): Array<{capabilityType: HomeyCapability, capabilityId: string, subType?: string}> {

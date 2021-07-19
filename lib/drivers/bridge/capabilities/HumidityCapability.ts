@@ -8,7 +8,7 @@ export class HumidityCapability extends BaseCapability<HomeyCapability.measure_h
     const characteristic: CurrentRelativeHumidity = service
       .getCharacteristic(CurrentRelativeHumidity)
       .updateValue(this.getTransform(this.getCapabilityValue()))
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail());
 
     this.registerCapabilityListenerOrFail(characteristic);
 

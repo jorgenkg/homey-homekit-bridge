@@ -9,7 +9,7 @@ export class Pm25Capability extends BaseCapability<HomeyCapability.measure_pm25,
     const characteristic: PM2_5Density = service
       .getCharacteristic(PM2_5Density)
       .updateValue(this.getTransform(this.getCapabilityValue()))
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail());
 
     this.registerCapabilityListenerOrFail(characteristic);
 

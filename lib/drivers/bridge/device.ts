@@ -7,10 +7,11 @@ import {
   HAPStorage, uuid
 } from "hap-nodejs";
 import { BaseDevice } from "./devices/BaseDevice";
-import {
-  Button, HomeAlarm, Light, Remote, Sensor
-} from "./devices";
+import { Button } from "./devices/Button";
+import { HomeAlarm } from "./devices/HomeAlarm";
 import { HomeyClass } from "../../enums/HomeyClass";
+import { Light } from "./devices/Light";
+import { Sensor } from "./devices/Sensor";
 
 
 const HOMEKIT_PINCODE = "111-11-111";
@@ -26,7 +27,7 @@ export default class BridgeDevice extends Homey.Device {
   async onInit() {
     this.log("Bridge device initializing...");
 
-    // Define storage path an Homey device only.
+    // Change the default storage path on only on Homey.
     if(process.env.TEST !== "1") {
       HAPStorage.setCustomStoragePath("/userdata/persist");
     }
@@ -56,7 +57,7 @@ export default class BridgeDevice extends Homey.Device {
     await new Promise(resolve => this.bridge?.on(AccessoryEventTypes.LISTENING, resolve));
     this.log("HAP server ready.");
 
-    const mappedDevices = await this.initializeMappedHomeyDevices();
+    const mappedDevices = await this.initializeDevices();
 
 
     if(mappedDevices.length > 0) {
@@ -82,53 +83,46 @@ export default class BridgeDevice extends Homey.Device {
     });
   }
 
-  private async initializeMappedHomeyDevices(): Promise<Array<BaseDevice<HomeyClass>>> {
+  private async initializeDevices(): Promise<Array<BaseDevice<HomeyClass>>> {
     this.api = athom.HomeyAPI.forCurrentHomey(this.homey);
     const devices = Object.values(await this.api.devices.getDevices());
 
     this.log(`Found ${devices.length} devices`);
 
-    const mappedDevices : Array<BaseDevice<HomeyClass>> = [];
+    const mappedDevices : Array<BaseDevice<HomeyClass> | undefined> = devices
+      .map(device => {
+        const deviceClass = device.class as HomeyClass;
 
-    for(const device of devices) {
-      const deviceClass = device.class as HomeyClass;
+        if(deviceClass === HomeyClass.button) {
+          const button = new Button(device, this.homey);
+          this.log(`Adding '${deviceClass}' device from device ID ${device.id}`);
+          return button;
+        }
+        else if(deviceClass === HomeyClass.light) {
+          const light = new Light(device, this.homey);
+          this.log(`Adding '${deviceClass}' device from device ID ${device.id}`);
+          return light;
+        }
+        else if(deviceClass === HomeyClass.homealarm) {
+          const homealarm = new HomeAlarm(device, this.homey);
+          this.log(`Adding '${deviceClass}' device from device ID ${device.id}`);
+          return homealarm;
+        }
+        else if(deviceClass === HomeyClass.sensor) {
+          const sensor = new Sensor(device, this.homey);
+          this.log(`Adding '${deviceClass}' device from device ID ${device.id}`);
+          return sensor;
+        }
+        else {
+          this.error(`Unsupported device class '${deviceClass}' from device ${device.id}: ${util.inspect(device, { breakLength: Infinity, depth: null })}`);
+        }
+      });
 
-      if(deviceClass === HomeyClass.button) {
-        const button = new Button(device, this.homey);
-        await button.initialize();
-        mappedDevices.push(button);
-        this.log(`Adding '${deviceClass}' device from device ID ${device.id}`);
-      }
-      else if(deviceClass === HomeyClass.light) {
-        const light = new Light(device, this.homey);
-        await light.initialize();
-        mappedDevices.push(light);
-        this.log(`Adding '${deviceClass}' device from device ID ${device.id}`);
-      }
-      else if(deviceClass === HomeyClass.homealarm) {
-        const homealarm = new HomeAlarm(device, this.homey);
-        await homealarm.initialize();
-        mappedDevices.push(homealarm);
-        this.log(`Adding '${deviceClass}' device from device ID ${device.id}`);
-      }
-      else if(deviceClass === HomeyClass.sensor) {
-        const sensor = new Sensor(device, this.homey);
-        await sensor.initialize();
-        mappedDevices.push(sensor);
-        this.log(`Adding '${deviceClass}' device from device ID ${device.id}`);
-      }
-      else if(deviceClass === HomeyClass.remote) {
-        const sensor = new Remote(device, this.homey);
-        await sensor.initialize();
-        mappedDevices.push(sensor);
-        this.log(`Adding '${deviceClass}' device from device ID ${device.id}`);
-      }
-      else {
-        this.log(`Unsupported device class '${deviceClass}' from device ${device.id}: ${util.inspect(device, { breakLength: Infinity, depth: null })}`);
-      }
-    }
+    // Remove empty entries from devices that couldn't be mapped to a HomeKit class.
+    const withoutUndefinedEntries = mappedDevices
+      .filter(device => device !== undefined) as typeof mappedDevices extends Array<infer r> ? Array<Exclude<r, undefined>> : never;
 
-    return mappedDevices;
+    return withoutUndefinedEntries;
   }
 
   public getAccessories() {

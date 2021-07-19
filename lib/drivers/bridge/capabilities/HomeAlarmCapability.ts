@@ -51,7 +51,7 @@ export class HomeAlarmCapability extends BaseCapability<HomeyCapability.homealar
         ]
       })
       .updateValue(this.getTransform(this.getCapabilityValue()))
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail());
 
     const target: SecuritySystemTargetState = service
       .getCharacteristic(SecuritySystemTargetState)
@@ -63,8 +63,8 @@ export class HomeAlarmCapability extends BaseCapability<HomeyCapability.homealar
         ]
       })
       .updateValue(this.getTransform(this.getCapabilityValue()))
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail())
-      .on(CharacteristicEventTypes.SET, this.setCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail())
+      .onSet(this.setCapabilityValueOrFail<any>());
 
     this.registerCapabilityListenerOrFail(current);
 

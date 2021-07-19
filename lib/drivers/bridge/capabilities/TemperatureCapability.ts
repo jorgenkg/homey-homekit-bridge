@@ -8,7 +8,7 @@ export class TemperatureCapability extends BaseCapability<HomeyCapability.measur
     const characteristic: CurrentTemperature = service
       .getCharacteristic(CurrentTemperature)
       .updateValue(this.getTransform(this.getCapabilityValue()))
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail());
 
     this.registerCapabilityListenerOrFail(characteristic);
 

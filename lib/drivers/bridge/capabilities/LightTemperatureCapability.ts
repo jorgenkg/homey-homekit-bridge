@@ -22,8 +22,8 @@ export class LightTemperatureCapability extends BaseCapability<HomeyCapability.l
     const characteristic: ColorTemperature = this.characteristic = service
       .getCharacteristic(ColorTemperature)
       .updateValue(this.getTransform(this.getCapabilityValue()))
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail())
-      .on(CharacteristicEventTypes.SET, this.setCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail())
+      .onSet(this.setCapabilityValueOrFail<any>());
 
     this.registerCapabilityListenerOrFail(characteristic);
 

@@ -27,8 +27,8 @@ export class DimLightCapability extends BaseCapability<HomeyCapability.dim, Brig
         unit: Units.PERCENTAGE
       })
       .updateValue(this.getTransform(this.getCapabilityValue()))
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail())
-      .on(CharacteristicEventTypes.SET, this.setCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail())
+      .onSet(this.setCapabilityValueOrFail<any>());
 
     this.registerCapabilityListenerOrFail(characteristic);
 
@@ -56,7 +56,7 @@ export class DimFanCapability extends BaseCapability<HomeyCapability.dim, [Curre
         unit: Units.PERCENTAGE
       })
       .updateValue(this.getTransform(this.getCapabilityValue()))
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail());
 
     const target: TargetFanState = service
       .getCharacteristic(TargetFanState)
@@ -66,7 +66,7 @@ export class DimFanCapability extends BaseCapability<HomeyCapability.dim, [Curre
         minStep: 1,
         unit: Units.PERCENTAGE
       })
-      .on(CharacteristicEventTypes.SET, this.setCapabilityValueOrFail());
+      .onSet(this.setCapabilityValueOrFail() as any);
 
     this.registerCapabilityListenerOrFail(current);
 

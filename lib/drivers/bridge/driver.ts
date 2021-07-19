@@ -6,9 +6,9 @@ export default class BridgeDriver extends Homey.Driver {
     return Promise.resolve();
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   onPair(session: Parameters<Homey.Driver["onPair"]>[0]) {
+    // This app shall be represented as single HomeKit bridge.
+    // Consequently, the pairing list is hardcoded to be a single device.
     session.setHandler("list_devices", () => Promise.resolve([{
       name: "HomeKit bridge",
       data: { id: 1 },

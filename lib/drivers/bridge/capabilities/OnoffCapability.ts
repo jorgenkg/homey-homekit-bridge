@@ -11,8 +11,8 @@ export class OnoffCapability extends BaseCapability<HomeyCapability.onoff, On> {
     const characteristic: On = this.onoffCharacteristic = service
       .getCharacteristic(On)
       .updateValue(this.getCapabilityValue())
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail())
-      .on(CharacteristicEventTypes.SET, this.setCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail())
+      .onSet(this.setCapabilityValueOrFail<any>());
 
     this.registerCapabilityListenerOrFail(characteristic);
 

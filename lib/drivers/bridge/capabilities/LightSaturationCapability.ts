@@ -18,8 +18,8 @@ export class LightSaturationCapability extends BaseCapability<HomeyCapability.li
     const characteristic: Saturation = this.characteristic = service
       .getCharacteristic(Saturation)
       .updateValue(this.getTransform(this.getCapabilityValue()))
-      .on(CharacteristicEventTypes.GET, this.getCapabilityValueOrFail())
-      .on(CharacteristicEventTypes.SET, this.setCapabilityValueOrFail());
+      .onGet(this.getCapabilityValueOrFail())
+      .onSet(this.setCapabilityValueOrFail<any>());
 
     this.registerCapabilityListenerOrFail(characteristic);
 
