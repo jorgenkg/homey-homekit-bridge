@@ -55,7 +55,7 @@ jobs:
       with:
         node-version: 12
     - name: Install parse-changelog
-        run: cargo install parse-changelog
+      run: cargo install parse-changelog
     - name: Install packages
       run: npm ci && npm run postinstall --if-present
     - name: Setup credentials
