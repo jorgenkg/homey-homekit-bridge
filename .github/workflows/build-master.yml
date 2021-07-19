@@ -59,8 +59,6 @@ jobs:
         echo "* Created .athom-cli/settings.json file."
     - name: Install packages
       run: npm ci && npm run postinstall --if-present
-    - name: Install parse-changelog
-      run: cargo install parse-changelog
     - name: Tag release, bump Homey versioning, push to Github and deploy to Homey App store
       run: |
         set -e
@@ -73,13 +71,14 @@ jobs:
         npx standard-version
 
         UPDATED_VERSION=`jq '.version' --raw-output package.json`
-        CHANGE_NOTES=$(parse-changelog CHANGELOG.md "$UPDATED_VERSION" || echo "General improvements")
+        CHANGE_NOTES=$(npx changelog-parser | jq --arg UPDATED_VERSION "$UPDATED_VERSION" '.versions[] | select(.version=$UPDATED_VERSION) | if .body != "" then .body else "General improvements" end')
         
         cat <<< $(jq --arg UPDATED_VERSION "$UPDATED_VERSION" '.version = $UPDATED_VERSION' build/app.json) > build/app.json
         cat <<< $(jq --arg UPDATED_VERSION $UPDATED_VERSION --arg CHANGE_NOTES "$CHANGE_NOTES" '.[$UPDATED_VERSION].en = $CHANGE_NOTES' build/.homeychangelog.json) > build/.homeychangelog.json
 
         git add build/app.json build/.homeychangelog.json
         git commit --amend --no-edit
+        git tag -fa "v$UPDATED_VERSION"
 
         git push --tags origin master
 
