@@ -5,6 +5,8 @@ on:
     branches: [ master ]
     paths-ignore:
       - 'CHANGELOG.md'
+      - 'build/.homeychangelog.json'
+      - 'build/app.json'
 
 jobs:
   build:
