@@ -77,7 +77,7 @@ jobs:
         cat <<< $(jq --arg UPDATED_VERSION $UPDATED_VERSION --arg CHANGE_NOTES "$CHANGE_NOTES" '.[$UPDATED_VERSION].en = $CHANGE_NOTES' build/.homeychangelog.json) > build/.homeychangelog.json
 
         git add build/app.json build/.homeychangelog.json
-        git commit --amend --no-edit
+        git commit --amend -q -m "chore(release): $UPDATED_VERSION"
         git tag -fa "v$UPDATED_VERSION"
 
         git push --tags origin master
