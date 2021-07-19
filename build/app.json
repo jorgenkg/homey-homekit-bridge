@@ -7,8 +7,8 @@
     "en": "Homey HomeKit Bridge"
   },
   "description": {
-    "en": "Make Homey appear as a HomeKit bridge to access devices in Apple Home",
-    "no": "Få Homey til å vises som en HomeKit Bridge i Apple Home."
+    "en": "Make Homey a HomeKit bridge in Apple Home",
+    "no": "Få Homey som en HomeKit Bridge i Apple Home."
   },
   "category": [
     "tools"
