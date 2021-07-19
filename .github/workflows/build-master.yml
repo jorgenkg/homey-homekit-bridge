@@ -76,7 +76,7 @@ jobs:
         npx standard-version
 
         UPDATED_VERSION=`jq '.version' --raw-output package.json`
-        CHANGE_NOTES=$(parse-changelog CHANGELOG.md "$UPDATED_VERSION" || "General improvements")
+        CHANGE_NOTES=$(parse-changelog CHANGELOG.md "$UPDATED_VERSION" || echo "General improvements")
         
         cat <<< $(jq --arg UPDATED_VERSION $UPDATED_VERSION '.version = $UPDATED_VERSION' build/app.json) > build/app.json
         cat <<< $(jq --arg UPDATED_VERSION $UPDATED_VERSION --arg CHANGE_NOTES $CHANGE_NOTES '.[$UPDATED_VERSION].en = $CHANGE_NOTES' build/.homeychangelog.json) > build/.homeychangelog.json
