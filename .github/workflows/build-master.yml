@@ -54,9 +54,6 @@ jobs:
         mkdir -p $HOME/.athom-cli
         echo "* Created .athom-cli directory"
 
-        which printenv
-        env
-
         echo "* Creating .athom-cli/settings.json..."
         printenv HOMEY_SETTINGS > $HOME/.athom-cli/settings.json
         echo "* Created .athom-cli/settings.json file."
