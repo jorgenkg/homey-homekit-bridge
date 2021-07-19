@@ -84,7 +84,7 @@ jobs:
         CHANGE_NOTES=$(parse-changelog CHANGELOG.md "$UPDATED_VERSION")
         
         cat <<< $(jq --arg UPDATED_VERSION $UPDATED_VERSION '.version = $UPDATED_VERSION' build/app.json) > build/app.json
-        cat <<< $(jq --arg UPDATED_VERSION $UPDATED_VERSION --arg CHANGE_NOTES $CHANGE_NOTES '.[$UPDATED_VERSION] = $CHANGE_NOTES' build/.homeychangelog.json) > build/.homeychangelog.json
+        cat <<< $(jq --arg UPDATED_VERSION $UPDATED_VERSION --arg CHANGE_NOTES $CHANGE_NOTES '.[$UPDATED_VERSION].en = $CHANGE_NOTES' build/.homeychangelog.json) > build/.homeychangelog.json
 
         git add build/app.json build/.homeychangelog.json
         git commit --amend
