@@ -26,7 +26,7 @@ export abstract class BaseCapability<
   public test!: CharacteristicValue;
   deferUpdate: BaseDevice<HomeyClass>["deferUpdate"];
 
-  protected compabilityInstance: HomeyAPI.ManagerDevices.Device.CapabilityInstance;
+  protected capabilityInstance: HomeyAPI.ManagerDevices.Device.CapabilityInstance;
   protected capabilityEmitter: StrictEventEmitter<EventEmitter, {
     change: (value: HomeyCapabilityTypes[Capability]) => Promise<void> | void
   }> = new EventEmitter();
@@ -46,7 +46,7 @@ export abstract class BaseCapability<
     this.capabilityId = capabilityId;
     this.deferUpdate = deferUpdate;
 
-    this.compabilityInstance = this.device.makeCapabilityInstance(
+    this.capabilityInstance = this.device.makeCapabilityInstance(
       this.capabilityId,
       () => this.capabilityEmitter.emit("change", this.getCapabilityValue())
     );
@@ -65,14 +65,14 @@ export abstract class BaseCapability<
 
   getCapabilityValue(): HomeyCapabilityTypes[Capability] {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return this.compabilityInstance.value;
+    return this.capabilityInstance.value;
   }
 
   setCapabilityValueOrFail<T extends CharacteristicValue = CharacteristicValue>() {
     return async(value: T) => {
       try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        await this.deferUpdate(this.capabilityId, value, () => this.compabilityInstance.setValue(this.setTransform(value)));
+        await this.deferUpdate(this.capabilityId, value, () => this.capabilityInstance.setValue(this.setTransform(value)));
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         this.homey.log(`Updated Homey capability '${this.capabilityId}': ${value}`);
         return void 0;
