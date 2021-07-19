@@ -45,26 +45,23 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: 12
-    - name: Install parse-changelog
-      run: cargo install parse-changelog
-    - name: Install packages
-      run: npm ci && npm run postinstall --if-present
     - name: Setup credentials
       run: |
         set -e
 
-        if [ ! -d "$HOME/.athom-cli" ]; then
-            mkdir -p $HOME/.athom-cli
-            echo "* Created .athom-cli directory"
-        fi
+        mkdir -p $HOME/.athom-cli
+        echo "* Created .athom-cli directory"
 
-        if [ ! -f "$HOME/.athom-cli/settings.json" ]; then
-          printenv HOMEY_SETTINGS > $HOME/.athom-cli/settings.json
-          echo "* Created .athom-cli/settings.json file"
-        fi
+        which printenv
 
-        echo "* Done."
-    - name: Tag release and push to Github
+        echo "* Creating .athom-cli/settings.json..."
+        printenv HOMEY_SETTINGS > $HOME/.athom-cli/settings.json
+        echo "* Created .athom-cli/settings.json file."
+    - name: Install packages
+      run: npm ci && npm run postinstall --if-present
+    - name: Install parse-changelog
+      run: cargo install parse-changelog
+    - name: Tag release, bump Homey versioning, push to Github and deploy to Homey App store
       run: |
         set -e
 
@@ -85,5 +82,5 @@ jobs:
         git commit --amend
 
         git push --tags origin master
-    - name: Publish Homey app
-      run: echo "n" | npm run dist
+
+        echo "n" | npm run dist
