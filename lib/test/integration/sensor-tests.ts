@@ -6,8 +6,9 @@ import {
 } from "../test-helpers/compose-helpers";
 import { HomeyCapability } from "../../enums/HomeyCapability";
 import { HomeyClass } from "../../enums/HomeyClass";
+import { timeout } from "../test-helpers/timeout";
 
-test("Expected Homey light device with Dim and Onoff to be mapped to a HomeKit Lightbulb with Brightness and On.", compose(
+test("Expected Homey sensor device with a HomeKit Sensor.", compose(
   withHomeyApp({
     devices: [
       {
@@ -25,12 +26,18 @@ test("Expected Homey light device with Dim and Onoff to be mapped to a HomeKit L
       }
     ]
   }),
-  ({ devices, bridge }, t) => {
+  async({ devices, bridge }, t) => {
     const [accessory] = bridge.getAccessories();
+    const [sensorDevice] = devices;
 
     const temperatureService = accessory.services.find(service => service.UUID === Service.TemperatureSensor.UUID);
     const temperatureCharacteristic = temperatureService?.characteristics.find(characteristic => characteristic.UUID === Characteristic.CurrentTemperature.UUID);
     t.ok(temperatureCharacteristic, "Expected the Accessory to have a CurrentTemperature characteristic");
+
+    const promiseHomeKitChangeCurrentTemperature = new Promise<{ oldValue: unknown, newValue: unknown }>(resolve => temperatureCharacteristic?.once("change", resolve));
+    sensorDevice.makeCapabilityInstance(HomeyCapability.measure_temperature, () => void 0).setValue(10);
+    const temperatureValue = await timeout(promiseHomeKitChangeCurrentTemperature, { message: "HomeKit tampered never changed" });
+    t.equal(temperatureValue.newValue, 10, "Expected HomeKit to react to 'measure_temperature' changes from Homey");
 
     const co2Service = accessory.services.find(service => service.UUID === Service.CarbonDioxideSensor.UUID);
     const co2Characteristic = co2Service?.characteristics.find(characteristic => characteristic.UUID === Characteristic.CarbonDioxideLevel.UUID);

@@ -18,7 +18,4 @@ This app support only a subset of Homey device classes:
 1. Light (on/off, dim, hue, saturation, temperature)
 2. Home alarm (alarm state and tamper detection)
 3. Button (stateless buttons)
-
-# Upcoming Homey device classes
-
-1. `sensor`
+4. Sensor (temperature, humidity, co2, co, pm25 and motion)

@@ -49,8 +49,6 @@ export abstract class BaseDevice<DeviceClass extends HomeyClass> {
     this.device = device;
     this.homey = homey;
 
-
-
     this.accessory = new Accessory(this.device.name, uuid.generate(this.device.id));
 
     (this.accessory.getService(Service.AccessoryInformation) || this.accessory.addService(Service.AccessoryInformation))
