@@ -4,22 +4,13 @@
   "main": "build/app.js",
   "scripts": {
     "clean": "rm -rf build/@types build/drivers build/enums build/test build/app.js",
-    "postinstall": "npx patch-package && npx husky install",
+    "postinstall": "npx patch-package",
+    "prepare": "npx husky install",
     "homey-validate": "npx homey app validate -p build -l publish",
     "homey-publish": "npx homey app publish -p build",
     "build": "npx tsc --build tsconfig.prod.json",
     "dist": "npm run clean && npm run build && npm run homey-validate && npm run homey-publish",
     "test": "TEST=1 tape --unhandled-rejections=strict --enable-source-maps build/test/integration/*tests.js"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS --config dist/commitlint.config.js"
-    }
-  },
-  "commitlint": {
-    "extends": [
-      "./@commitlint/config-conventional"
-    ]
   },
   "engines": {
     "node": ">=12.16.1"
