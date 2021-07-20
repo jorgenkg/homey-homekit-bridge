@@ -71,11 +71,16 @@ jobs:
         npx standard-version
 
         UPDATED_VERSION=`jq '.version' --raw-output package.json`
-        CHANGE_NOTES=$(npx changelog-parser | jq --arg UPDATED_VERSION "$UPDATED_VERSION" '.versions[] | select(.version=$UPDATED_VERSION) | if .body != "" then .body else "General improvements" end')
-        
-        cat <<< $(jq --arg UPDATED_VERSION "$UPDATED_VERSION" '.version = $UPDATED_VERSION' build/app.json) > build/app.json
-        cat <<< $(jq --arg UPDATED_VERSION $UPDATED_VERSION --arg CHANGE_NOTES "$CHANGE_NOTES" '.[$UPDATED_VERSION].en = $CHANGE_NOTES' build/.homeychangelog.json) > build/.homeychangelog.json
+        CHANGE_NOTES=$(npx changelog-parser | jq --raw-output --arg UPDATED_VERSION "$UPDATED_VERSION" '.versions[] | select(.version==$UPDATED_VERSION).parsed._ | map("* "+.[:-10]) | join("\n") | if . != "" then . else "General improvements" end')
 
+        cp build/app.json build/app.json.bak
+        jq --arg UPDATED_VERSION "$UPDATED_VERSION" '.version = $UPDATED_VERSION' build/app.json.bak > build/app.json
+        rm build/app.json.bak
+
+        cp build/.homeychangelog.json build/.homeychangelog.json.bak
+        jq --arg UPDATED_VERSION $UPDATED_VERSION --arg CHANGE_NOTES "$CHANGE_NOTES" '.[$UPDATED_VERSION].en = $CHANGE_NOTES' build/.homeychangelog.json.bak > build/.homeychangelog.json
+        rm build/.homeychangelog.json.bak
+        
         git add build/app.json build/.homeychangelog.json
         git commit --amend -q -m "chore(release): $UPDATED_VERSION"
         git tag -fa "v$UPDATED_VERSION"
