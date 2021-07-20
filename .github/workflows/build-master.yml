@@ -70,8 +70,8 @@ jobs:
 
         npx standard-version
 
-        UPDATED_VERSION=`jq '.version' --raw-output package.json`
-        CHANGE_NOTES=$(npx changelog-parser | jq --raw-output --arg UPDATED_VERSION "$UPDATED_VERSION" '.versions[] | select(.version==$UPDATED_VERSION).parsed._ | map("* "+.[:-10]) | join("\n") | if . != "" then . else "General improvements" end')
+        UPDATED_VERSION=$(jq '.version' --raw-output package.json)
+        CHANGE_NOTES=$(npx changelog-parser | jq --raw-output --arg UPDATED_VERSION "$UPDATED_VERSION" '.versions[] | select(.version==$UPDATED_VERSION).parsed._ | map(.[:-10]) | join(", ") | if . != "" then . else "General improvements" end')
 
         cp build/app.json build/app.json.bak
         jq --arg UPDATED_VERSION "$UPDATED_VERSION" '.version = $UPDATED_VERSION' build/app.json.bak > build/app.json
@@ -82,8 +82,8 @@ jobs:
         rm build/.homeychangelog.json.bak
         
         git add build/app.json build/.homeychangelog.json
-        git commit --amend -q -m "chore(release): $UPDATED_VERSION"
-        git tag -fa "v$UPDATED_VERSION"
+        git commit --amend -m "chore(release): $UPDATED_VERSION"
+        git tag -fa "v$UPDATED_VERSION" -m "chore(release): $UPDATED_VERSION"
 
         git push --tags origin master
 
