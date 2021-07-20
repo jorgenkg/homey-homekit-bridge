@@ -22,6 +22,10 @@
     "name": "Jørgen Grimnes",
     "email": "jorgenkg@yahoo.no"
   },
+  "source": "https://github.com/jorgenkg/homey-homekit-bridge/issues",
+  "bugs": {
+    "url": "https://github.com/jorgenkg/homey-homekit-bridge/issues"
+  },
   "permissions": [
     "homey:manager:api"
   ],
