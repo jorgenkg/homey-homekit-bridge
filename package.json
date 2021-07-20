@@ -10,6 +10,11 @@
     "dist": "npm run clean && npm run build && npm run homey-validate && npm run homey-publish",
     "test": "TEST=1 tape --unhandled-rejections=strict --enable-source-maps build/test/integration/*tests.js"
   },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS --config dist/commitlint.config.js"
+    }
+  },
   "engines": {
     "node": ">=12.16.1"
   },
