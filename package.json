@@ -4,6 +4,7 @@
   "main": "build/app.js",
   "scripts": {
     "clean": "rm -rf build/@types build/drivers build/enums build/test build/app.js",
+    "postinstall": "npx patch-package && npx husky install",
     "homey-validate": "npx homey app validate -p build -l publish",
     "homey-publish": "npx homey app publish -p build",
     "build": "npx tsc --build tsconfig.prod.json",
@@ -14,6 +15,11 @@
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS --config dist/commitlint.config.js"
     }
+  },
+  "commitlint": {
+    "extends": [
+      "./@commitlint/config-conventional"
+    ]
   },
   "engines": {
     "node": ">=12.16.1"

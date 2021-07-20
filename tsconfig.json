@@ -10,8 +10,5 @@
     "inlineSources": true,                 /* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. */
     "forceConsistentCasingInFileNames": true,
   },
-  "include": [
-    "lib",
-    "commitlint.config.ts"
-  ]
+  "include": ["lib"]
 }
