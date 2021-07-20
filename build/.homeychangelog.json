@@ -13,5 +13,8 @@
   },
   "1.0.4": {
     "en": "General improvements"
+  },
+  "1.1.0": {
+    "en": "add support for \"sensor\" device class, change changelog parser in gh action, new icons, use the new hap-nodejs update property syntax, new icons, use the new hap-nodejs update property syntax, new icons, new icons"
   }
 }
