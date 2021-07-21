@@ -3,13 +3,13 @@
   "version": "1.1.2",
   "main": "build/app.js",
   "scripts": {
-    "clean": "rm -rf build/@types build/drivers build/enums build/test build/app.js",
+    "clean": "rm -rf build/@types build/drivers build/enums build/test build/app.js build/package*.json",
     "postinstall": "npx patch-package",
     "prepare": "npx husky install",
     "homey-validate": "npx homey app validate -p build -l publish",
     "homey-publish": "npx homey app publish -p build",
     "build": "npx tsc --build tsconfig.prod.json",
-    "dist": "npm run clean && npm run build && npm run homey-validate && npm run homey-publish",
+    "dist": "npm run clean && npm run build && rm -rf build/@types build/test && cp package-lock.json build/ && jq 'del(.scripts) | del(.devDependencies)' package.json > build/package.json && npm ci --production --prefix build && npm run homey-publish",
     "test": "TEST=1 tape --unhandled-rejections=strict --enable-source-maps build/test/integration/*tests.js"
   },
   "engines": {
