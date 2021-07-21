@@ -36,6 +36,8 @@ export class Light extends BaseDevice<HomeyClass.light> {
   initialize(): void {
     this.accessory.category = Categories.LIGHTBULB;
     const services: Record<string, Lightbulb> = {};
+    const hasBrightness = new Set<Lightbulb>();
+    const hasColorTemperature = new Set<Lightbulb>();
 
     for(const { capabilityId, subType = "", capabilityType } of this.getCapabilitiesWithSubtypes()) {
       if(!(subType in services)) {
@@ -46,6 +48,7 @@ export class Light extends BaseDevice<HomeyClass.light> {
       if(capabilityType === HomeyCapability.dim) {
         const capability = new DimLightCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
         capability.initialize(services[subType]);
+        hasBrightness.add(services[subType]);
         this.homey.log(`Device ${this.device.id} initialized ${capabilityType} from capabilityId '${capabilityId}'`);
       }
       else if(capabilityType === HomeyCapability.onoff) {
@@ -82,6 +85,7 @@ export class Light extends BaseDevice<HomeyClass.light> {
       else if(capabilityType === HomeyCapability.light_temperature) {
         const capability = new LightTemperatureCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
         capability.initialize(services[subType]);
+        hasColorTemperature.add(services[subType]);
         capability.characteristic?.onSet(() => {
           try {
             this.eventEmitter.emit("changeLightMode", "temperature");
@@ -116,7 +120,7 @@ export class Light extends BaseDevice<HomeyClass.light> {
 
     for(const lightbulb of Object.values(services)) {
       // The lightbulb supports "HomeKit Adaptive lighting" if it has both the Brightness and Color temperature characteristics.
-      if(lightbulb.getCharacteristic(Brightness) && lightbulb.getCharacteristic(ColorTemperature)) {
+      if(hasBrightness.has(lightbulb) && hasColorTemperature.has(lightbulb)) {
         const adaptiveLightingController = new AdaptiveLightingController(lightbulb, { controllerMode: AdaptiveLightingControllerMode.AUTOMATIC });
         this.accessory.configureController(adaptiveLightingController);
       }
