@@ -16,3 +16,5 @@ export default class BridgeDriver extends Homey.Driver {
     }]));
   }
 }
+
+module.exports = BridgeDriver;

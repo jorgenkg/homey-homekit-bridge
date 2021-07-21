@@ -145,3 +145,5 @@ export default class BridgeDevice extends Homey.Device {
     this.bridge?.unpublish();
   }
 }
+
+module.exports = BridgeDevice;
