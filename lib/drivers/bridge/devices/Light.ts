@@ -6,7 +6,7 @@ import {
 } from "hap-nodejs";
 import { BaseDevice } from "./BaseDevice";
 import { Brightness, ColorTemperature, Lightbulb } from "hap-nodejs/dist/lib/definitions";
-import { DimLightCapability } from "../capabilities/DimCapability";
+import { DimLightCapability } from "../capabilities/DimLightCapability";
 import { EventEmitter } from "events";
 import { HomeyCapability } from "../../../enums/HomeyCapability";
 import { HomeyClass } from "../../../enums/HomeyClass";
