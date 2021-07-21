@@ -17,7 +17,8 @@ export class Button extends BaseDevice<HomeyClass.button> {
 
     for(const { capabilityType, capabilityId, subType } of this.getCapabilitiesWithSubtypes()) {
       if(capabilityType === HomeyCapability.button) {
-        const service = new Switch("Button", subType);
+        const name = this.device.name + (subType ? ` (${subType})` : "");
+        const service = new Switch(name, subType);
         const capability = new StatelessButtonCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
 
         capability.initialize(service);

@@ -25,37 +25,43 @@ export class Sensor extends BaseDevice<HomeyClass.sensor> {
 
     for(const { capabilityId, subType = "", capabilityType } of this.getCapabilitiesWithSubtypes()) {
       if(capabilityType === HomeyCapability.measure_temperature) {
-        const service = new TemperatureSensor("Temperature", subType);
+        const name = this.device.name + (subType ? ` (${subType})` : "");
+        const service = new TemperatureSensor(name, subType);
         const capability = new TemperatureCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
         capability.initialize(service);
         services.push(service);
       }
       else if(capabilityType === HomeyCapability.measure_co2) {
-        const service = new CarbonDioxideSensor("CO2", subType);
+        const name = this.device.name + (subType ? ` (${subType})` : "");
+        const service = new CarbonDioxideSensor(name, subType);
         const capability = new CarbonDioxideCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
         capability.initialize(service);
         services.push(service);
       }
       else if(capabilityType === HomeyCapability.measure_co) {
-        const service = new CarbonMonoxideSensor("CO", subType);
+        const name = this.device.name + (subType ? ` (${subType})` : "");
+        const service = new CarbonMonoxideSensor(name, subType);
         const capability = new CarbonMonoxideCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
         capability.initialize(service);
         services.push(service);
       }
       else if(capabilityType === HomeyCapability.measure_humidity) {
-        const service = new HumiditySensor("Humidity", subType);
+        const name = this.device.name + (subType ? ` (${subType})` : "");
+        const service = new HumiditySensor(name, subType);
         const capability = new HumidityCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
         capability.initialize(service);
         services.push(service);
       }
       else if(capabilityType === HomeyCapability.measure_pm25) {
-        const service = new AirQualitySensor("PM 2.5", subType);
+        const name = this.device.name + (subType ? ` (${subType})` : "");
+        const service = new AirQualitySensor(name, subType);
         const capability = new Pm25Capability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
         capability.initialize(service);
         services.push(service);
       }
       else if(capabilityType === HomeyCapability.alarm_motion) {
-        const service = new MotionSensor("Motion", subType);
+        const name = this.device.name + (subType ? ` (${subType})` : "");
+        const service = new MotionSensor(name, subType);
         const capability = new MotionCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
         capability.initialize(service);
         services.push(service);

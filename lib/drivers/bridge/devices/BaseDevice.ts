@@ -53,8 +53,7 @@ export abstract class BaseDevice<DeviceClass extends HomeyClass> {
 
     (this.accessory.getService(Service.AccessoryInformation) || this.accessory.addService(Service.AccessoryInformation))
       .setCharacteristic(Characteristic.Manufacturer, this.device.driverId)
-      .setCharacteristic(Characteristic.Model, this.device.name + "(Homey)")
-      .setCharacteristic(Characteristic.SerialNumber, this.device.id);
+      .setCharacteristic(Characteristic.Model, this.device.driverId + "(via Homey)");
 
     this.accessory.on(AccessoryEventTypes.IDENTIFY, (_paired, callback) => callback());
 

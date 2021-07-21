@@ -39,7 +39,8 @@ export class Light extends BaseDevice<HomeyClass.light> {
 
     for(const { capabilityId, subType = "", capabilityType } of this.getCapabilitiesWithSubtypes()) {
       if(!(subType in services)) {
-        services[subType] = new Lightbulb("Light", subType);
+        const name = this.device.name + (subType ? ` (${subType})` : "");
+        services[subType] = new Lightbulb(name, subType);
       }
 
       if(capabilityType === HomeyCapability.dim) {
@@ -131,7 +132,10 @@ export class Light extends BaseDevice<HomeyClass.light> {
       // If the dim level is set to 0, the onoff value must be 'false' if the onoff characteristic is set.
       HomeyCapability.dim in triggered &&
       triggered[HomeyCapability.dim].value === 0 &&
-      onoffCapability !== undefined
+      onoffCapability !== undefined &&
+      // boolean whether the light is turned on.
+      // If the dim value is 0, the lamp should be off
+      onoffCapability.getCapabilityValue()
     ) {
       this.deferredTriggers[onoffCapability.capabilityId] = {
         value: false,
@@ -143,7 +147,10 @@ export class Light extends BaseDevice<HomeyClass.light> {
       // The dim is set to > 0, the onoff value must be 'true' if the characteristic is set.
       HomeyCapability.dim in triggered &&
       triggered[HomeyCapability.dim].value as number > 0 &&
-      onoffCapability !== undefined
+      onoffCapability !== undefined &&
+      // boolean whether the light is turned on
+      // If the dim value is > 0, the lamp should be on
+      !onoffCapability.getCapabilityValue()
     ) {
       this.deferredTriggers[onoffCapability.capabilityId] = {
         value: true,
@@ -163,8 +170,7 @@ export class Light extends BaseDevice<HomeyClass.light> {
       const [capabilityTypeA] = A.split(".");
       const [capabilityTypeB] = B.split(".");
 
-      return (capabilityTypeA in sortOrder ? sortOrder[capabilityTypeA] : 0)
-        - (capabilityTypeB in sortOrder ? sortOrder[capabilityTypeB] : 0);
+      return (sortOrder[capabilityTypeA] ?? 0) - (sortOrder[capabilityTypeB] ?? 0);
     });
 
     for(const [id, { fn }] of executeTriggers) {

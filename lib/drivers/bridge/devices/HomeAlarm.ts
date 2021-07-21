@@ -27,7 +27,8 @@ export class HomeAlarm extends BaseDevice<HomeyClass.homealarm> {
 
     for(const { capabilityId, subType = "", capabilityType } of this.getCapabilitiesWithSubtypes()) {
       if(!(subType in services)) {
-        services[subType] = new SecuritySystem("Alarm", subType);
+        const name = this.device.name + (subType ? ` (${subType})` : "");
+        services[subType] = new SecuritySystem(name, subType);
       }
 
       if(capabilityType === HomeyCapability.homealarm_state) {
