@@ -106,7 +106,7 @@ export abstract class BaseCapability<
       try {
         const oldHomekitValue = characteristic.value;
         await this.deferUpdate(this.capabilityId, value, async() => {
-          await new Promise<void>(resolve => characteristic.updateValue(this.getTransform(value) as any, resolve));
+          characteristic.updateValue(this.getTransform(value) as any);
         });
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         this.homey.log(`Homey value change on capabilityId '${this.capabilityId}' triggered update to HomeKit: ${oldHomekitValue} -> ${this.getTransform(value)}`);

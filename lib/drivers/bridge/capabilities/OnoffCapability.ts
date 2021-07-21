@@ -19,8 +19,8 @@ export class OnoffCapability extends BaseCapability<HomeyCapability.onoff, On> {
     return characteristic;
   }
 
-  async changeSwitchState(state: boolean) {
+  changeSwitchState(state: boolean) {
     this.capabilityInstance.setValue(state);
-    await new Promise<void>(resolve => this.onoffCharacteristic?.updateValue(state, resolve));
+    this.onoffCharacteristic?.updateValue(state);
   }
 }
