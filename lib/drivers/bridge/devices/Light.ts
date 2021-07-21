@@ -93,13 +93,11 @@ export class Light extends BaseDevice<HomeyClass.light> {
         this.homey.log(`Device ${this.device.id} initialized ${capabilityType} from capabilityId '${capabilityId}'`);
       }
       else if(capabilityType === HomeyCapability.light_mode) {
+        const transientCapabilityInstance = this.device.makeCapabilityInstance(capabilityId, () => void 0);
+
         this.eventEmitter.on("changeLightMode", async mode => {
           try {
-            await this.deferUpdate(capabilityId, mode, () => {
-              const transientCapabilityInstance = this.device.makeCapabilityInstance(capabilityId, () => void 0);
-              transientCapabilityInstance.setValue(mode);
-              transientCapabilityInstance.destroy();
-            });
+            await this.deferUpdate(capabilityId, mode, () => transientCapabilityInstance.setValue(mode));
           }
           catch(error) {
             this.homey.error(util.inspect(error, { breakLength: Infinity, depth: null }));
