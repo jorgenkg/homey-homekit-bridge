@@ -24,7 +24,7 @@ const HomeyDriverIMockManager = ImportMock.mockOther(Homey, "Driver", class _ {
   error = (message: string) => debug("homeymock:driver:error")(message);
 } as any);
 export const HomeyAPIMockManager = ImportMock.mockClass(athom, "HomeyAPI");
-athom.HomeyAPI.forCurrentHomey = () => HomeyAPIMockManager.getMockInstance();
+athom.HomeyAPI.forCurrentHomey = () => Promise.resolve(HomeyAPIMockManager.getMockInstance());
 
 import * as tape from "tape";
 import { HomeyCapability } from "../../enums/HomeyCapability";

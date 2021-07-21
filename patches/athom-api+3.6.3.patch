@@ -1,0 +1,13 @@
+diff --git a/node_modules/athom-api/dist/types.d.ts b/node_modules/athom-api/dist/types.d.ts
+index f884a82..6171d25 100644
+--- a/node_modules/athom-api/dist/types.d.ts
++++ b/node_modules/athom-api/dist/types.d.ts
+@@ -901,7 +901,7 @@ declare class HomeyAPI {
+      * @param {string} [token] - The Homey Token to use
+      * @returns {HomeyAPI} The HomeyAPI instance
+      */
+-    static forCurrentHomey(homey?: any, token?: string): HomeyAPI;
++    static forCurrentHomey(homey?: any, token?: string): Promise<HomeyAPI>;
+ }
+ 
+ declare namespace HomeyAPI {

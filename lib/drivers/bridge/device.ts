@@ -84,12 +84,12 @@ export default class BridgeDevice extends Homey.Device {
   }
 
   private async initializeDevices(): Promise<Array<BaseDevice<HomeyClass>>> {
-    this.api = athom.HomeyAPI.forCurrentHomey(this.homey);
+    this.api = await athom.HomeyAPI.forCurrentHomey(this.homey);
     const devices = Object.values(await this.api.devices.getDevices());
 
     this.log(`Found ${devices.length} devices`);
 
-    const mappedDevices : Array<BaseDevice<HomeyClass> | undefined> = devices
+    const mappedDevices : Array<BaseDevice<HomeyClass> | null> = devices
       .map(device => {
         const deviceClass = device.class as HomeyClass;
 
@@ -115,12 +115,13 @@ export default class BridgeDevice extends Homey.Device {
         }
         else {
           this.error(`Unsupported device class '${deviceClass}' from device ${device.id}: ${util.inspect(device, { breakLength: Infinity, depth: null })}`);
+          return null;
         }
       });
 
     // Remove empty entries from devices that couldn't be mapped to a HomeKit class.
     const withoutUndefinedEntries = mappedDevices
-      .filter(device => device !== undefined) as typeof mappedDevices extends Array<infer r> ? Array<Exclude<r, undefined>> : never;
+      .filter(device => device !== null) as Array<NonNullable<typeof mappedDevices[0]>>;
 
     return withoutUndefinedEntries;
   }
