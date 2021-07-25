@@ -22,5 +22,8 @@
   },
   "1.1.2": {
     "en": "General improvements"
+  },
+  "1.1.3": {
+    "en": "await athom api get devices, export homey classes using module.exports, improve device names in homekit -> device + subType, lightbulb devices must have both brightness and color temperature to support adaptive lighting, refactor file export such that both VS code and homey accept the syntax, remove deprecated hap-nodejs callback on updateValue()"
   }
 }

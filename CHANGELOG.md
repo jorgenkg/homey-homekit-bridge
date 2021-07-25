@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.3](https://github.com/jorgenkg/homey-homekit-bridge/compare/v1.1.2...v1.1.3) (2021-07-25)
+
+
+### Bug Fixes
+
+* await athom api get devices ([b4bb74a](https://github.com/jorgenkg/homey-homekit-bridge/commit/b4bb74a3a716a6d25aef4b50410c2136e1f7e64c))
+* export homey classes using module.exports ([4060c6f](https://github.com/jorgenkg/homey-homekit-bridge/commit/4060c6f0aa25ac947cdaea314e460b8c2f83b420))
+* improve device names in homekit -> device + subType ([ea53eec](https://github.com/jorgenkg/homey-homekit-bridge/commit/ea53eec8f57002b7711bcbf43e9c8b45b323b36b))
+* lightbulb devices must have both brightness and color temperature to support adaptive lighting ([9dee28e](https://github.com/jorgenkg/homey-homekit-bridge/commit/9dee28e57aff4a4a7ec8edfebe466df06afb69f7))
+* refactor file export such that both VS code and homey accept the syntax ([c44b6d2](https://github.com/jorgenkg/homey-homekit-bridge/commit/c44b6d2333a43824afa33c3ae49b074ef2b13aa3))
+* remove deprecated hap-nodejs callback on updateValue() ([b24c40c](https://github.com/jorgenkg/homey-homekit-bridge/commit/b24c40c66c4a1c69ee0a60c64947981317368a65))
+
 ### [1.1.2](https://github.com/jorgenkg/homey-homekit-bridge/compare/v1.1.1...v1.1.2) (2021-07-20)
 
 ### [1.1.1](https://github.com/jorgenkg/homey-homekit-bridge/compare/v1.1.0...v1.1.1) (2021-07-20)
