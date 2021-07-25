@@ -1,6 +1,6 @@
 import * as Homey from "homey";
 
-export default class BridgeDriver extends Homey.Driver {
+module.exports = class BridgeDriver extends Homey.Driver {
   onInit() {
     this.log("Driver started.");
     return Promise.resolve();
@@ -15,6 +15,4 @@ export default class BridgeDriver extends Homey.Driver {
       settings: {}
     }]));
   }
-}
-
-module.exports = BridgeDriver;
+};

@@ -26,14 +26,14 @@ const HomeyDriverIMockManager = ImportMock.mockOther(Homey, "Driver", class _ {
 export const HomeyAPIMockManager = ImportMock.mockClass(athom, "HomeyAPI");
 athom.HomeyAPI.forCurrentHomey = () => Promise.resolve(HomeyAPIMockManager.getMockInstance());
 
+import * as BridgeDevice from "../../drivers/bridge/device";
 import * as tape from "tape";
 import { HomeyCapability } from "../../enums/HomeyCapability";
 import { HomeyCapabilityTypes } from "../../@types/HomeyCapabilityTypes";
 import { HomeyClass } from "../../enums/HomeyClass";
 import { Middleware, TestComposer } from "./compose-types.js";
 import { setupDevices } from "./mocks";
-import BridgeDevice from "../../drivers/bridge/device";
-
+import type { default as IBridgeDevice } from "../../drivers/bridge/device";
 
 export const compose: TestComposer = (...composers: unknown[]) => {
   const test = composers.pop() as (...args: unknown[]) => Promise<void>;
@@ -66,11 +66,12 @@ type DeviceMock = {
 
 
 
-export function withHomeyApp({ devices }: { devices: Array<DeviceMock> }): Middleware<{bridge: BridgeDevice, devices: Array<athom.HomeyAPI.ManagerDevices.Device> }> {
+export function withHomeyApp({ devices }: { devices: Array<DeviceMock> }): Middleware<{bridge: IBridgeDevice, devices: Array<athom.HomeyAPI.ManagerDevices.Device> }> {
   return async next => {
     const athomDevices = setupDevices(devices);
 
-    const bridge = new BridgeDevice();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const bridge: IBridgeDevice = new (BridgeDevice as unknown as new () => any)();
     await bridge.onInit();
 
     let error: Error | undefined;
