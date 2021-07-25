@@ -21,7 +21,7 @@
     "@types/homey": "npm:homey-apps-sdk-v3-types@0.2.2",
     "@types/node": "16.4.2",
     "@types/sinon": "10.0.2",
-    "@types/tape": "4.13.1",
+    "@types/tape": "4.13.2",
     "@typescript-eslint/eslint-plugin": "4.28.4",
     "@typescript-eslint/parser": "4.28.4",
     "changelog-parser": "2.8.0",
