@@ -19,7 +19,7 @@ jobs:
       with:
         node-version: 12
     - name: Install packages
-      run: npm ci && npm run postinstall --if-present
+      run: npm ci && npm run prepare --if-present
     - name: Transpile with Typescript
       run: npx tsc --build tsconfig.json
     - name: Run tests
@@ -78,7 +78,7 @@ jobs:
         printenv HOMEY_SETTINGS > $HOME/.athom-cli/settings.json
         echo "* Created .athom-cli/settings.json file."
     - name: Install packages
-      run: npm ci && npm run postinstall --if-present
+      run: npm ci && npm run prepare --if-present
     - name: Tag release, bump Homey versioning, push to Github and deploy to Homey App store
       run: |
         set -e
