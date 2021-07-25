@@ -1,8 +1,8 @@
 diff --git a/node_modules/athom-api/dist/types.d.ts b/node_modules/athom-api/dist/types.d.ts
-index f884a82..6171d25 100644
+index ded3048..389d748 100644
 --- a/node_modules/athom-api/dist/types.d.ts
 +++ b/node_modules/athom-api/dist/types.d.ts
-@@ -901,7 +901,7 @@ declare class HomeyAPI {
+@@ -906,7 +906,7 @@ declare class HomeyAPI {
       * @param {string} [token] - The Homey Token to use
       * @returns {HomeyAPI} The HomeyAPI instance
       */
