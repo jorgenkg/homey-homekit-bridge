@@ -27,7 +27,7 @@
     "changelog-parser": "2.8.0",
     "eslint": "7.31.0",
     "eslint-plugin-sort-imports-es6-autofix": "0.6.0",
-    "homey": "2.20.4",
+    "homey": "2.20.5",
     "husky": "7.0.1",
     "patch-package": "6.4.7",
     "sinon": "11.1.1",
