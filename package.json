@@ -30,7 +30,7 @@
     "homey": "2.20.5",
     "husky": "7.0.1",
     "patch-package": "6.4.7",
-    "sinon": "11.1.1",
+    "sinon": "11.1.2",
     "standard-version": "9.3.1",
     "strict-event-emitter-types": "2.0.0",
     "tape": "5.3.0",
