@@ -25,6 +25,7 @@ export abstract class BaseDevice<DeviceClass extends HomeyClass> {
   protected device: HomeyAPI.ManagerDevices.Device;
 
   protected deferEmitter: DeferEmitter = new EventEmitter();
+
   protected deferredTriggers: {
     [capabilityId: string]: {
       value: unknown,
@@ -33,7 +34,7 @@ export abstract class BaseDevice<DeviceClass extends HomeyClass> {
   } = {};
 
   protected deferHandler: ReturnType<Device.Homey["setTimeout"]> | null = null;
-  protected deferrerExecuting = false
+  protected deferrerExecuting = false;
 
   protected accessory: Accessory;
 
@@ -105,7 +106,7 @@ export abstract class BaseDevice<DeviceClass extends HomeyClass> {
         this.deferEmitter.emit(DeferEvent.deferExecuted);
       }
       catch(error) {
-        this.deferEmitter.emit(DeferEvent.deferExecuted, error);
+        this.deferEmitter.emit(DeferEvent.deferExecuted, error as Error);
       }
     }, DEFER_MS);
 
