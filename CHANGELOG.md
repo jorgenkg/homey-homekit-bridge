@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.6](https://github.com/jorgenkg/homey-homekit-bridge/compare/v1.1.5...v1.1.6) (2021-12-21)
+
+
+### Bug Fixes
+
+* update packages ([cfebf91](https://github.com/jorgenkg/homey-homekit-bridge/commit/cfebf915e4ef9ab8426fe3249b0367514eb8fe04))
+
 ### [1.1.5](https://github.com/jorgenkg/homey-homekit-bridge/compare/v1.1.4...v1.1.5) (2021-07-29)
 
 ### [1.1.4](https://github.com/jorgenkg/homey-homekit-bridge/compare/v1.1.3...v1.1.4) (2021-07-25)
