@@ -24,8 +24,6 @@ jobs:
       run: npx tsc --build tsconfig.json
     - name: Run tests
       run: npm run test
-    - name: Run Homey validation
-      run: npx homey app validate -p build -l publish
   
   echoPendingChangelog:
     name: Render pending changelog
@@ -107,4 +105,4 @@ jobs:
 
         git push --tags origin master
 
-        echo "y n" | npm run dist
+        echo "n" | npm run dist
