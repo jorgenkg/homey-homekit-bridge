@@ -38,6 +38,6 @@
   "dependencies": {
     "athom-api": "^3.7.1",
     "debug": "^4.3.3",
-    "hap-nodejs": "^0.9.7"
+    "hap-nodejs": "^0.10.0"
   }
 }
