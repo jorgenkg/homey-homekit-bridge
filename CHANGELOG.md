@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.7](https://github.com/jorgenkg/homey-homekit-bridge/compare/v1.1.6...v1.1.7) (2022-05-17)
+
+
+### Bug Fixes
+
+* **deps:** update dependency hap-nodejs to ^0.10.0 ([2431f51](https://github.com/jorgenkg/homey-homekit-bridge/commit/2431f5140ea0013a02c13a5257b991902eafd85b))
+* updated packages ([7ca77cc](https://github.com/jorgenkg/homey-homekit-bridge/commit/7ca77ccd7b07aeadad0e226b95af8426892597d9))
+
 ### [1.1.6](https://github.com/jorgenkg/homey-homekit-bridge/compare/v1.1.5...v1.1.6) (2021-12-21)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "homey-homekit-bridge",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "main": "build/app.js",
   "scripts": {
     "clean": "rm -rf build/@types build/drivers build/enums build/test build/app.js build/package*.json",
