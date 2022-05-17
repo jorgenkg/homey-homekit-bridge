@@ -1,5 +1,5 @@
 diff --git a/node_modules/athom-api/dist/types.d.ts b/node_modules/athom-api/dist/types.d.ts
-index ac0434b..800dfef 100644
+index df8670b..b40de48 100644
 --- a/node_modules/athom-api/dist/types.d.ts
 +++ b/node_modules/athom-api/dist/types.d.ts
 @@ -913,7 +913,7 @@ declare class HomeyAPI {
