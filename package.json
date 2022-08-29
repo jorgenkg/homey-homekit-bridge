@@ -13,7 +13,7 @@
     "node": ">=12.16.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.1.1",
+    "@commitlint/cli": "17.1.2",
     "@commitlint/config-conventional": "17.1.0",
     "@types/debug": "4.1.7",
     "@types/homey": "npm:homey-apps-sdk-v3-types@0.3.1",
