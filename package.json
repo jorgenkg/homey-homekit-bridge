@@ -27,7 +27,7 @@
     "eslint-plugin-sort-imports-es6-autofix": "0.6.0",
     "homey": "2.30.6",
     "husky": "8.0.1",
-    "patch-package": "6.4.7",
+    "patch-package": "6.5.0",
     "sinon": "14.0.1",
     "standard-version": "9.5.0",
     "strict-event-emitter-types": "2.0.0",
