@@ -28,7 +28,7 @@
     "homey": "2.30.7",
     "husky": "8.0.1",
     "patch-package": "6.5.0",
-    "sinon": "14.0.1",
+    "sinon": "14.0.2",
     "standard-version": "9.5.0",
     "strict-event-emitter-types": "2.0.0",
     "tape": "5.6.1",
