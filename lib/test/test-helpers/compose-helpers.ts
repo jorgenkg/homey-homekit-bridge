@@ -4,20 +4,20 @@ import debug = require("debug");
 import { ImportMock } from "ts-mock-imports";
 
 const HomeyDeviceIMockManager = ImportMock.mockOther(Homey, "Device", class _ {
-  #store: Record<string, unknown> = {}
+  #store: Record<string, unknown> = {};
   log = (message: string) => debug("homeymock:device:debug")(message);
   error = (message: string) => debug("homeymock:device:error")(message);
-  getStore = () => this.#store
+  getStore = () => this.#store;
   setStoreValue = (key: string, value: unknown) => {
     this.#store[key] = value;
-  }
+  };
   homey = ({
     on: (event: string, listener: (...args: any[]) => void) => {},
     log: (message: string) => debug("homeymock:device:debug")(message),
     error: (message: string) => debug("homeymock:device:error")(message),
     setTimeout: global.setTimeout as any,
     clearTimeout: global.clearTimeout as any
-  } as Partial<Homey.Device.Homey>)
+  } as Partial<Homey.Device.Homey>);
 } as any);
 const HomeyDriverIMockManager = ImportMock.mockOther(Homey, "Driver", class _ {
   log = (message: string) => debug("homeymock:driver:debug")(message);
