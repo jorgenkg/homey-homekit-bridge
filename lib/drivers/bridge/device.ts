@@ -12,6 +12,7 @@ import { HomeAlarm } from "./devices/HomeAlarm";
 import { HomeyClass } from "../../enums/HomeyClass";
 import { Light } from "./devices/Light";
 import { Sensor } from "./devices/Sensor";
+import { Sunshade } from "./devices/Sunshade";
 
 
 const HOMEKIT_PINCODE = "111-11-111";
@@ -53,6 +54,7 @@ export default class BridgeDevice extends Homey.Device {
       pincode: HOMEKIT_PINCODE,
       category: Categories.BRIDGE
     }, false);
+
     this.log(`Waiting for HAP server to start listening with username ${macAddress}...`);
     await new Promise(resolve => this.bridge?.on(AccessoryEventTypes.LISTENING, resolve));
     this.log("HAP server ready.");
@@ -110,6 +112,11 @@ export default class BridgeDevice extends Homey.Device {
         }
         else if(deviceClass === HomeyClass.sensor) {
           const sensor = new Sensor(device, this.homey);
+          this.log(`Adding '${deviceClass}' device from device ID ${device.id}`);
+          return sensor;
+        }
+        else if(deviceClass === HomeyClass.sunshade) {
+          const sensor = new Sunshade(device, this.homey);
           this.log(`Adding '${deviceClass}' device from device ID ${device.id}`);
           return sensor;
         }
