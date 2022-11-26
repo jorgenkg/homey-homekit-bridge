@@ -1,8 +1,5 @@
 node_modules
 **/.DS_Store
-build/*
-!build/assets
-!build/app.json
-!build/README*
-!build/.homey*
+build
 persist
+

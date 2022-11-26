@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out repository code
-      uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
+      uses: actions/checkout
+    - uses: actions/setup-node
       with:
-        node-version: 12
+        node-version: 16.0
     - name: Install packages
       run: npm ci && npm run prepare --if-present
     - name: Transpile with Typescript
@@ -33,14 +33,14 @@ jobs:
         shell: bash
     steps:
     - name: Check out repository code
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout
     - name: Use Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node
+      with:
+        node-version: '16.0.0'
     - name: Generate standard version changelog
       run: |
-        npm ci
+        npm ci && npm run prepare --if-present
         npx standard-version --skip.commit --skip.tag
         UPDATED_VERSION=$(jq '.version' --raw-output package.json)
         npx changelog-parser | jq --raw-output --arg UPDATED_VERSION "$UPDATED_VERSION" '.versions[] | select(.version==$UPDATED_VERSION).body | if . != "" then . else "[[empty]]" end'
@@ -58,25 +58,21 @@ jobs:
       HOMEY_SETTINGS: ${{ secrets.HOMEY_SETTINGS }}
     steps:
     - name: Check out repository code
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout
     - name: Use Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node
       with:
-        node-version: 12
+        node-version: '16.0.0'
     - name: Setup credentials
       run: |
-        set -e
-
+        set -ex
         mkdir -p $HOME/.athom-cli
-        echo "* Created .athom-cli directory"
-
-        echo "* Creating .athom-cli/settings.json..."
         printenv HOMEY_SETTINGS > $HOME/.athom-cli/settings.json
-        echo "* Created .athom-cli/settings.json file."
     - name: Install packages
-      run: npm ci && npm run prepare --if-present
+      run: |
+        set -ex
+        npm ci
+        npm run prepare --if-present
     - name: Tag release, bump Homey versioning, push to Github and deploy to Homey App store
       run: |
         set -e
@@ -91,16 +87,18 @@ jobs:
         UPDATED_VERSION=$(jq '.version' --raw-output package.json)
         CHANGE_NOTES=$(npx changelog-parser | jq --raw-output --arg UPDATED_VERSION "$UPDATED_VERSION" '.versions[] | select(.version==$UPDATED_VERSION).parsed._ | map(.[:-10]) | join(", ") | if . != "" then . else "General improvements" end')
 
-        cp build/app.json build/app.json.bak
-        jq --arg UPDATED_VERSION "$UPDATED_VERSION" '.version = $UPDATED_VERSION' build/app.json.bak > build/app.json
-        rm build/app.json.bak
+        cp resources/app.json resources/app.json.bak
+        jq --arg UPDATED_VERSION "$UPDATED_VERSION" '.version = $UPDATED_VERSION' resources/app.json.bak > resources/app.json
+        rm resources/app.json.bak
 
-        cp build/.homeychangelog.json build/.homeychangelog.json.bak
-        jq --arg UPDATED_VERSION $UPDATED_VERSION --arg CHANGE_NOTES "$CHANGE_NOTES" '.[$UPDATED_VERSION].en = $CHANGE_NOTES' build/.homeychangelog.json.bak > build/.homeychangelog.json
-        rm build/.homeychangelog.json.bak
+        cp resources/.homeychangelog.json resources/.homeychangelog.json.bak
+        jq --arg UPDATED_VERSION $UPDATED_VERSION --arg CHANGE_NOTES "$CHANGE_NOTES" '.[$UPDATED_VERSION].en = $CHANGE_NOTES' resources/.homeychangelog.json.bak > resources/.homeychangelog.json
+        rm resources/.homeychangelog.json.bak
         
-        git add build/app.json build/.homeychangelog.json
+        git add resources/app.json resources/.homeychangelog.json
         git commit --amend -m "chore(release): $UPDATED_VERSION"
+        
+        # Update the tag created by [standard-version] to the new commit
         git tag -fa "v$UPDATED_VERSION" -m "chore(release): $UPDATED_VERSION"
 
         git push --tags origin master
