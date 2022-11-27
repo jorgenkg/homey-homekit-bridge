@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/jorgenkg/homey-homekit-bridge/compare/v1.1.7...v1.2.0) (2022-11-27)
+
+
+### Features
+
+* upgrade hap-nodejs  v0.10 -> v0.11 ([b3f3b2a](https://github.com/jorgenkg/homey-homekit-bridge/commit/b3f3b2ac86e7d42efdcf92287605aa5f8aba9eff))
+
+
+### Bug Fixes
+
+* add support for sunshade devices ([69e75eb](https://github.com/jorgenkg/homey-homekit-bridge/commit/69e75ebf41f1dc439c2a2d26ef5e3a7aae77f8bf))
+* upgrade athom-api version ([3d957b9](https://github.com/jorgenkg/homey-homekit-bridge/commit/3d957b9c29355b17198e459bb5e615c4a88a7098))
+
 ### [1.1.7](https://github.com/jorgenkg/homey-homekit-bridge/compare/v1.1.6...v1.1.7) (2022-05-17)
 
 

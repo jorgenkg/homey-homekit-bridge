@@ -37,5 +37,8 @@
   },
   "1.1.7": {
     "en": "Updated packages"
+  },
+  "1.2.0": {
+    "en": "upgrade hap-nodejs  v0.10 -> v0.11, add support for sunshade devices, upgrade athom-api version"
   }
 }
