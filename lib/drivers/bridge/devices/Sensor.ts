@@ -1,10 +1,21 @@
 import {
-  AirQualitySensor, CarbonDioxideSensor, CarbonMonoxideSensor, HumiditySensor, MotionSensor, TemperatureSensor
+  AirQualitySensor,
+  Battery,
+  CarbonDioxideSensor,
+  CarbonMonoxideSensor,
+  HumiditySensor,
+  MotionSensor,
+  TemperatureSensor
 } from "hap-nodejs/dist/lib/definitions";
 import { BaseDevice } from "./BaseDevice";
+import { BatteryLevelCapability } from "../capabilities/BatteryLevelCapability";
+import { BatteryLowAlertCapability } from "../capabilities/BatteryLowAlertCapability";
 import { CarbonDioxideCapability } from "../capabilities/CarbonDioxideCapability";
 import { CarbonMonoxideCapability } from "../capabilities/CarbonMonoxideCapability";
-import { Categories, Service } from "hap-nodejs";
+import {
+  Categories,
+  Service
+} from "hap-nodejs";
 import { HomeyCapability } from "../../../enums/HomeyCapability";
 import { HomeyClass } from "../../../enums/HomeyClass";
 import { HumidityCapability } from "../capabilities/HumidityCapability";
@@ -65,6 +76,22 @@ export class Sensor extends BaseDevice<HomeyClass.sensor> {
         const capability = new MotionCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
         capability.initialize(service);
         services.push(service);
+      }
+      else if(capabilityType === HomeyCapability.alarm_battery) {
+        const existingBatteryService = services.find(s => s.UUID === Battery.UUID);
+        const name = this.device.name + (subType ? ` (${subType})` : "");
+        const service = existingBatteryService ?? new Battery(name, subType);
+        const capability = new BatteryLowAlertCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
+        capability.initialize(service);
+        !existingBatteryService && services.push(service);
+      }
+      else if(capabilityType === HomeyCapability.measure_battery) {
+        const existingBatteryService = services.find(s => s.UUID === Battery.UUID);
+        const name = this.device.name + (subType ? ` (${subType})` : "");
+        const service = existingBatteryService ?? new Battery(name, subType);
+        const capability = new BatteryLevelCapability(this.deviceClass, this.device, this.homey, capabilityType, capabilityId, this.deferUpdate.bind(this));
+        capability.initialize(service);
+        !existingBatteryService && services.push(service);
       }
       else {
         this.homey.error(`Unsupported capability on device ${this.device.id}: ${capabilityType} from capabilityId '${capabilityId}'`);
