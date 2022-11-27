@@ -103,4 +103,4 @@ jobs:
 
         git push --tags origin master
 
-        echo "n" | npm run dist
+        npm run dist

@@ -16,4 +16,4 @@ jq 'del(.scripts) | del(.devDependencies)' package.json > build/package.json
 cd build
 npm ci --omit=dev
 
-#npx homey app publish
+echo "n" | npx homey app publish
