@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out repository code
-      uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
+      uses: actions/checkout
+    - uses: actions/setup-node
       with:
-        node-version: 12
+        node-version: 16.0
     - name: Install packages
       run: npm ci && npm run postinstall --if-present
     - name: Transpile with Typescript
