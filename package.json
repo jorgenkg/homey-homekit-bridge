@@ -14,7 +14,7 @@
     "@commitlint/cli": "17.3.0",
     "@commitlint/config-conventional": "17.3.0",
     "@types/debug": "4.1.7",
-    "@types/homey": "npm:homey-apps-sdk-v3-types@0.3.1",
+    "@types/homey": "npm:homey-apps-sdk-v3-types@0.3.9",
     "@types/node": "^18.11.9",
     "@types/sinon": "10.0.13",
     "@types/tape": "4.13.2",
